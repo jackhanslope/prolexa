@@ -19,6 +19,7 @@ iverb(p,M)			--> [Verb],   {pred2gr(_P,1,v/Verb,M)}.
 pred(human,   1,[a/human,n/human]).
 pred(mortal,  1,[a/mortal,n/mortal]).
 pred(wounded, 1,[a/wounded]).
+pred(abnormal, 1,[a/abnormal]).
 pred(bird,    1,[n/bird]).
 pred(ostrich, 1,[n/ostrich]).
 pred(fly,     1,[v/fly]).
