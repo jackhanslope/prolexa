@@ -22,6 +22,7 @@ pred(wounded, 1,[a/wounded]).
 pred(abnormal, 1,[a/abnormal]).
 pred(bird,    1,[n/bird]).
 pred(ostrich, 1,[n/ostrich]).
+pred(dove, 1,[n/dove]).
 pred(fly,     1,[v/fly]).
 
 pred2gr(P,1,C/W,X=>Lit):-
@@ -52,13 +53,13 @@ sword --> [that].
 % most of this follows Simply Logical, Chapter 7
 sentence1(C) --> determiner(N,M1,M2,C),noun(N,M1),verb_phrase(N,M2).
 sentence1([(L:-true)]) --> proper_noun(N,X),verb_phrase(N,X=>L).
-sentence1([(M1:-M2)]) --> [if,someone],verb_phrase(s,M=>M2),[then,they],verb_phrase(_,M=>M1).
+sentence1([(M1:-M2)]) --> [if,someone],verb_phrase(s,M=>M2),[then,they],verb_phrase(s,M=>M1).
 
 verb_phrase(s,M) --> [is],property(s,M).
 verb_phrase(p,M) --> [are],property(p,M).
 verb_phrase(s,M) --> [are],property(s,M).
 verb_phrase(N,M) --> iverb(N,M).
-verb_phrase(N,M) --> [can],iverb(N,M).
+verb_phrase(_,M) --> [can],iverb(p,M).
 
 property(N,M) --> adjective(N,M).
 property(s,M) --> [a],noun(s,M).
