@@ -19,8 +19,8 @@
 
 
 %some intial stored rules
-stored_rule(1,[(mortal(X):-human(X))]).
-stored_rule(1,[(human(peter):-true)]).
+% stored_rule(1,[(mortal(X):-human(X))]).
+% stored_rule(1,[(human(peter):-true)]).
 
 
 %%% Prolexa Command Line Interface %%%

@@ -18,15 +18,9 @@ iverb(p,M)			--> [Verb],   {pred2gr(_P,1,v/Verb,M)}.
 % unary predicates for adjectives, nouns and verbs
 pred(human,   1,[a/human,n/human]).
 pred(mortal,  1,[a/mortal,n/mortal]).
-%pred(man,     1,[a/male,n/man]).
-%pred(woman,   1,[a/female,n/woman]).
-%pred(married, 1,[a/married]).
-%pred(bachelor,1,[n/bachelor]).
-%pred(mammal,  1,[n/mammal]).
+pred(wounded, 1,[a/wounded]).
 pred(bird,    1,[n/bird]).
-%pred(bat,     1,[n/bat]).
-pred(penguin, 1,[n/penguin]).
-pred(sparrow, 1,[n/sparrow]).
+pred(ostrich, 1,[n/ostrich]).
 pred(fly,     1,[v/fly]).
 
 pred2gr(P,1,C/W,X=>Lit):-
@@ -37,6 +31,7 @@ pred2gr(P,1,C/W,X=>Lit):-
 noun_s2p(Noun_s,Noun_p):-
 	( Noun_s=woman -> Noun_p=women
 	; Noun_s=man -> Noun_p=men
+        ; Noun_s=ostrich -> Noun_p=ostriches
 	; atom_concat(Noun_s,s,Noun_p)
 	).
 
@@ -70,8 +65,11 @@ determiner(p,X=>B,X=>H,[(H:-B)]) --> [all].
 %determiner(p,X=>B,X=>H,[(H:-B)]) --> [].
 %determiner(p, sk=>H1, sk=>H2, [(H1:-true),(H2 :- true)]) -->[some].
 
-proper_noun(s,tweety) --> [tweety].
-proper_noun(s,peter) --> [peter].
+% proper nouns
+proper_noun(s,arthur) --> [arthur].
+proper_noun(s,bill) --> [bill].
+proper_noun(s,colin) --> [colin].
+proper_noun(s,dave) --> [dave].
 
 
 %%% questions %%%
