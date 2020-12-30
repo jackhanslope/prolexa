@@ -66,7 +66,7 @@ verb_phrase(N,M) --> iverb(N,M).
 verb_phrase(_,M) --> [can],iverb(p,M).
 
 n_verb_phrase(s,M) --> [is,not],property(s,M).
-n_verb_phrase(_,M) --> [cannot],iverb(s,M).
+n_verb_phrase(_,M) --> [cannot],iverb(p,M).
 
 and_phrase(s,X,Y) --> [is],property(s,X),[and],property(s,Y).
 
