@@ -54,12 +54,15 @@ sword --> [that].
 sentence1(C) --> determiner(N,M1,M2,C),noun(N,M1),verb_phrase(N,M2).
 sentence1([(L:-true)]) --> proper_noun(N,X),verb_phrase(N,X=>L).
 sentence1([(M1:-M2)]) --> [if,someone],verb_phrase(s,M=>M2),[then,they],verb_phrase(s,M=>M1).
+sentence1([(M1:-X,Y)]) --> [if,someone],and_phrase(s, M=>X, M=>Y), [then, they], verb_phrase(s,M=>M1). 
 
 verb_phrase(s,M) --> [is],property(s,M).
 verb_phrase(p,M) --> [are],property(p,M).
 verb_phrase(s,M) --> [are],property(s,M).
 verb_phrase(N,M) --> iverb(N,M).
 verb_phrase(_,M) --> [can],iverb(p,M).
+
+and_phrase(s,X,Y) --> [is],property(s,X),[and],property(s,Y).
 
 property(N,M) --> adjective(N,M).
 property(s,M) --> [a],noun(s,M).
@@ -75,6 +78,8 @@ proper_noun(s,arthur) --> [arthur].
 proper_noun(s,bill) --> [bill].
 proper_noun(s,colin) --> [colin].
 proper_noun(s,dave) --> [dave].
+
+proper_noun(s,jack) --> [jack].
 
 
 %%% questions %%%
