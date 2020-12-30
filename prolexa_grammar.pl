@@ -76,6 +76,8 @@ proper_noun(s,bill) --> [bill].
 proper_noun(s,colin) --> [colin].
 proper_noun(s,dave) --> [dave].
 
+proper_noun(s,jack) --> [jack].
+
 
 %%% questions %%%
 
