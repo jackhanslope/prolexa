@@ -18,6 +18,10 @@ prove_question(Query,SessionId,Answer):-
 		transform(Query,Clauses),
 		phrase(sentence(Clauses),AnswerAtomList),
 		atomics_to_string(AnswerAtomList," ",Answer)
+	; prove_rb(not(Query),Rulebase) ->
+		transform(not(Query),Clauses),
+		phrase(sentence(Clauses),AnswerAtomList),
+		atomics_to_string(AnswerAtomList," ",Answer)
 	; Answer = 'Sorry, I don\'t think this is the case'
 	).	
 
@@ -71,10 +75,16 @@ add_body_to_rulebase(A,Rs0,[[(A:-true)]|Rs0]).
 
 % 3d argument is accumulator for proofs
 prove_rb(true,_Rulebase,P,P):-!.
+prove_rb((false,_),_Rulebase,P,P):-!.
 prove_rb((A,B),Rulebase,P0,P):-!,
 	find_clause((A:-C),Rule,Rulebase),
 	conj_append(C,B,D),
     prove_rb(D,Rulebase,[p((A,B),Rule)|P0],P).
+
+prove_rb(not(A),Rulebase,P0,P):-
+        find_clause((false:-A),Rule,Rulebase),
+        prove_rb((false,A),Rulebase,[p(not(A),Rule)|P0],P).
+
 prove_rb(A,Rulebase,P0,P):-
     find_clause((A:-B),Rule,Rulebase),
 	prove_rb(B,Rulebase,[p(A,Rule)|P0],P).
@@ -96,6 +106,9 @@ transform((A,B),[(A:-true)|Rest]):-!,
     transform(B,Rest).
 transform(A,[(A:-true)]).
 
+transform(not(A),[(false:-A)]).
+transform((not(A),B),[(false:-A)|Rest]):-!,
+        transform(B,Rest).
 
 %%% Two more commands: all_rules/1 and all_answers/2
 
