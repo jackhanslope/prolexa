@@ -78,7 +78,7 @@ n_and_phrase(s,X,Y) --> [is],property(s,X),[and,not],property(s,Y).
 n_and_phrase(s,Y,X) --> [is,not],property(s,X),[and],property(s,Y).
 
 property(N,M) --> adjective(N,M).
-property(s,M) --> [a],noun(s,M).
+property(s,M) --> indef_article,noun(s,M).
 property(p,M) --> noun(p,M).
 property(N,not(M)) --> [not],adjective(N,M).
 
@@ -86,6 +86,9 @@ determiner(s,X=>B,X=>H,[(H:-B)]) --> [every].
 determiner(p,X=>B,X=>H,[(H:-B)]) --> [all].
 %determiner(p,X=>B,X=>H,[(H:-B)]) --> [].
 %determiner(p, sk=>H1, sk=>H2, [(H1:-true),(H2 :- true)]) -->[some].
+
+indef_article --> [a].
+indef_article --> [an].
 
 % proper nouns
 proper_noun(s,arthur) --> [arthur].
