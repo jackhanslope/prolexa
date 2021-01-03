@@ -32,6 +32,10 @@ prove_question(Query,Answer):-
 		transform(Query,Clauses),
 		phrase(sentence(Clauses),AnswerAtomList),
 		atomics_to_string(AnswerAtomList," ",Answer)
+        ; prove_rb(not(Query),Rulebase) ->
+                transform(not(Query),Clauses),
+                phrase(sentence(Clauses),AnswerAtomList),
+                atomics_to_string(AnswerAtomList," ",Answer)
 	; Answer = ""
 	).	
 
