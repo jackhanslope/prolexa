@@ -18,6 +18,10 @@ prove_question(Query,SessionId,Answer):-
 		transform(Query,Clauses),
 		phrase(sentence(Clauses),AnswerAtomList),
 		atomics_to_string(AnswerAtomList," ",Answer)
+	; prove_rb(not(Query),Rulebase) ->
+		transform(not(Query),Clauses),
+		phrase(sentence(Clauses),AnswerAtomList),
+		atomics_to_string(AnswerAtomList," ",Answer)
 	; Answer = 'Sorry, I don\'t think this is the case'
 	).	
 
@@ -28,6 +32,10 @@ prove_question(Query,Answer):-
 		transform(Query,Clauses),
 		phrase(sentence(Clauses),AnswerAtomList),
 		atomics_to_string(AnswerAtomList," ",Answer)
+        ; prove_rb(not(Query),Rulebase) ->
+                transform(not(Query),Clauses),
+                phrase(sentence(Clauses),AnswerAtomList),
+                atomics_to_string(AnswerAtomList," ",Answer)
 	; Answer = ""
 	).	
 
@@ -75,6 +83,7 @@ prove_rb((A,B),Rulebase,P0,P):-!,
 	find_clause((A:-C),Rule,Rulebase),
 	conj_append(C,B,D),
     prove_rb(D,Rulebase,[p((A,B),Rule)|P0],P).
+
 prove_rb(A,Rulebase,P0,P):-
     find_clause((A:-B),Rule,Rulebase),
 	prove_rb(B,Rulebase,[p(A,Rule)|P0],P).
@@ -95,7 +104,6 @@ find_clause(Clause,Rule,[_Rule|Rules]):-
 transform((A,B),[(A:-true)|Rest]):-!,
     transform(B,Rest).
 transform(A,[(A:-true)]).
-
 
 %%% Two more commands: all_rules/1 and all_answers/2
 
