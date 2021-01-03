@@ -55,7 +55,7 @@ sentence1(C) --> determiner(N,M1,M2,C),noun(N,M1),verb_phrase(N,M2).
 sentence1([(L:-true)]) --> proper_noun(N,X),verb_phrase(N,X=>L).
 sentence1([(M1:-M2)]) --> [if,someone],verb_phrase(s,M=>M2),[then,they],verb_phrase(s,M=>M1).
 sentence1([(M1:-X,Y)]) --> [if,someone],and_phrase(s, M=>X, M=>Y), [then, they], verb_phrase(s,M=>M1). 
-sentence1([(false:-L)]) --> proper_noun(N,X),n_verb_phrase(N,X=>L).
+sentence1([(not(L):-true)]) --> proper_noun(N,X),n_verb_phrase(N,X=>L).
 sentence1([(not(M1):-M2)]) --> [if,someone],verb_phrase(s,M=>M2),[then,they],n_verb_phrase(s,M=>M1).
 
 verb_phrase(s,M) --> [is],property(s,M).
