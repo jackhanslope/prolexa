@@ -15,7 +15,7 @@ noun(p,M)			--> [Noun_p], {pred2gr(_P,1,n/Noun,M),noun_s2p(Noun,Noun_p)}.
 iverb(s,M)			--> [Verb_s], {pred2gr(_P,1,v/Verb,M),verb_p2s(Verb,Verb_s)}.
 iverb(p,M)			--> [Verb],   {pred2gr(_P,1,v/Verb,M)}.
 tverb(s,Y=>X)                   --> [Verb_s], {pred2gr(_P,2,v/Verb,Y=>X),verb_p2s(Verb,Verb_s)}.
-tverb(s,Y=>X)                   --> [Verb],   {pred2gr(_P,2,v/Verb,Y=>X)}.
+tverb(p,Y=>X)                   --> [Verb],   {pred2gr(_P,2,v/Verb,Y=>X)}.
 
 
 % unary predicates for adjectives, nouns and verbs
