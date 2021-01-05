@@ -123,6 +123,7 @@ property(s,M) --> indef_article,noun(s,M).
 property(p,M) --> noun(p,M).
 
 pronoun(person, hypo) --> [someone].
+pronoun(person, hypo) --> [a,person].
 pronoun(person, concrete) --> [they].
 pronoun(thing, hypo) --> [something].
 pronoun(thing, concrete) --> [it].
@@ -140,10 +141,10 @@ proper_noun(s,arthur) --> [arthur].
 proper_noun(s,bill) --> [bill].
 proper_noun(s,colin) --> [colin].
 proper_noun(s,dave) --> [dave].
-
 proper_noun(s,gary) --> [gary].
-
 proper_noun(s,jack) --> [jack].
+proper_noun(s,harry) --> [harry].
+proper_noun(s,mr_dursley) --> [mr,dursley].
 
 
 %%% questions %%%
