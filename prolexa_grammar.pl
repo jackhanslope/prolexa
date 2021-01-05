@@ -12,6 +12,7 @@ utterance(C) --> command(C).
 adjective(_,M)		--> [Adj],    {pred2gr(_P,1,a/Adj, M)}.
 noun(s,M)			--> [Noun],   {pred2gr(_P,1,n/Noun,M)}.
 noun(p,M)			--> [Noun_p], {pred2gr(_P,1,n/Noun,M),noun_s2p(Noun,Noun_p)}.
+noun(m,M)                       --> [Noun],   {pred2gr(_P,1,mn/Noun,M)}.
 iverb(s,M)			--> [Verb_s], {pred2gr(_P,1,v/Verb,M),verb_p2s(Verb,Verb_s)}.
 iverb(p,M)			--> [Verb],   {pred2gr(_P,1,v/Verb,M)}.
 tverb(s,Y=>X)                   --> [Verb_s], {pred2gr(_P,2,v/Verb,Y=>X),verb_p2s(Verb,Verb_s)}.
@@ -33,6 +34,10 @@ pred(ostrich, 1,[n/ostrich]).
 pred(dove, 1,[n/dove]).
 pred(owl, 1,[n/owl]).
 pred(cat, 1,[n/cat]).
+
+pred(sand, 1,[mn/sand]).
+pred(magic, 1,[mn/magic]).
+pred(football, 1,[mn/football]).
 
 pred(fly,     1,[v/fly]).
 
@@ -91,7 +96,12 @@ verb_phrase(N,M) --> iverb(N,M).
 verb_phrase(_,M) --> [can],iverb(p,M).
 
 verb_phrase(p,X) --> tverb(p,Y=>X),noun(p,Y).
+verb_phrase(p,X) --> tverb(p,Y=>X),noun(m,Y).
 verb_phrase(s,X) --> tverb(s,Y=>X),noun(p,Y).
+verb_phrase(s,X) --> tverb(s,Y=>X),noun(m,Y).
+
+verb_phrase(s,X) --> [can],tverb(p,Y=>X),noun(p,Y).
+verb_phrase(s,X) --> [can],tverb(p,Y=>X),noun(m,Y).
 
 n_verb_phrase(s,M) --> [is,not],property(s,M).
 n_verb_phrase(_,M) --> [cannot],iverb(p,M).
