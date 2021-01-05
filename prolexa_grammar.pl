@@ -34,14 +34,18 @@ pred(ostrich, 1,[n/ostrich]).
 pred(dove, 1,[n/dove]).
 pred(owl, 1,[n/owl]).
 pred(cat, 1,[n/cat]).
+pred(muggle, 1,[n/muggle]).
 
 pred(sand, 1,[mn/sand]).
 pred(magic, 1,[mn/magic]).
 pred(football, 1,[mn/football]).
 
 pred(fly,     1,[v/fly]).
+pred(vanish,     1,[v/vanish]).
 
 pred(like, 2,[v/like]).
+pred(do, 2, [v/do]).
+pred(play, 2, [v/play]).
 
 pred2gr(P,1,C/W,X=>Lit):-
 	pred(P,1,L),
@@ -62,6 +66,8 @@ noun_s2p(Noun_s,Noun_p):-
 
 verb_p2s(Verb_p,Verb_s):-
 	( Verb_p=fly -> Verb_s=flies
+        ; Verb_p=do -> Verb_s=does
+        ; Verb_p=vanish -> Verb_s=vanishes
 	; 	atom_concat(Verb_p,s,Verb_s)
 	).
 
