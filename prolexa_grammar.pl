@@ -83,7 +83,6 @@ n_and_phrase(s,Y,X) --> [is,not],property(s,X),[and],property(s,Y).
 property(N,M) --> adjective(N,M).
 property(s,M) --> indef_article,noun(s,M).
 property(p,M) --> noun(p,M).
-property(N,not(M)) --> [not],adjective(N,M).
 
 determiner(s,X=>B,X=>H,[(H:-B)]) --> [every].
 determiner(p,X=>B,X=>H,[(H:-B)]) --> [all].
