@@ -20,9 +20,15 @@ pred(human,   1,[a/human,n/human]).
 pred(mortal,  1,[a/mortal,n/mortal]).
 pred(wounded, 1,[a/wounded]).
 pred(abnormal, 1,[a/abnormal]).
+pred(blue, 1,[a/blue]).
+pred(round, 1,[a/round]).
+pred(quiet, 1,[a/quiet]).
+pred(cold, 1,[a/cold]).
+
 pred(bird,    1,[n/bird]).
 pred(ostrich, 1,[n/ostrich]).
 pred(dove, 1,[n/dove]).
+
 pred(fly,     1,[v/fly]).
 
 pred2gr(P,1,C/W,X=>Lit):-
@@ -53,15 +59,16 @@ sword --> [that].
 % most of this follows Simply Logical, Chapter 7
 sentence1(C) --> determiner(N,M1,M2,C),noun(N,M1),verb_phrase(N,M2).
 sentence1([(L:-true)]) --> proper_noun(N,X),verb_phrase(N,X=>L).
+sentence1([(M1:-M2)]) --> adjective(p,M=>M2),[things],verb_phrase(p,M=>M1).
 
-sentence1([(M1:-M2)]) --> [if,someone],verb_phrase(s,M=>M2),[then,they],verb_phrase(s,M=>M1).
-sentence1([(M1:-not(M2))]) --> [if,someone],n_verb_phrase(s,M=>M2),[then,they],verb_phrase(s,M=>M1).
-sentence1([(not(M1):-M2)]) --> [if,someone],verb_phrase(s,M=>M2),[then,they],n_verb_phrase(s,M=>M1).
+sentence1([(M1:-M2)]) --> [if],pronoun(P,hypo),verb_phrase(s,M=>M2),[then],pronoun(P,concrete),verb_phrase(s,M=>M1).
+sentence1([(M1:-not(M2))]) --> [if],pronoun(P,hypo),n_verb_phrase(s,M=>M2),[then],pronoun(P,concrete),verb_phrase(s,M=>M1).
+sentence1([(not(M1):-M2)]) --> [if],pronoun(P,hypo),verb_phrase(s,M=>M2),[then],pronoun(P,concrete),n_verb_phrase(s,M=>M1).
 
-sentence1([(M1:-X,Y)]) --> [if,someone],and_phrase(s, M=>X, M=>Y), [then, they], verb_phrase(s,M=>M1). 
+sentence1([(M1:-X,Y)]) --> [if],pronoun(P,hypo),and_phrase(s, M=>X, M=>Y), [then],pronoun(P,concrete), verb_phrase(s,M=>M1). 
 
-sentence1([(M1:-M3,not(M2))]) --> [if,someone],n_and_phrase(N,M=>M3,M=>M2),[then,they],verb_phrase(N,M=>M1).
-sentence1([(not(M1):-M3,not(M2))]) --> [if,someone],n_and_phrase(N,M=>M3,M=>M2),[then,they],n_verb_phrase(N,M=>M1).
+sentence1([(M1:-M3,not(M2))]) --> [if],pronoun(P,hypo),n_and_phrase(N,M=>M3,M=>M2),[then],pronoun(P,concrete),verb_phrase(N,M=>M1).
+sentence1([(not(M1):-M3,not(M2))]) --> [if],pronoun(P,hypo),n_and_phrase(N,M=>M3,M=>M2),[then],pronoun(P,concrete),n_verb_phrase(N,M=>M1).
 
 sentence1([(not(L):-true)]) --> proper_noun(N,X),n_verb_phrase(N,X=>L).
 
@@ -83,7 +90,11 @@ n_and_phrase(s,Y,X) --> [is,not],property(s,X),[and],property(s,Y).
 property(N,M) --> adjective(N,M).
 property(s,M) --> indef_article,noun(s,M).
 property(p,M) --> noun(p,M).
-property(N,not(M)) --> [not],adjective(N,M).
+
+pronoun(person, hypo) --> [someone].
+pronoun(person, concrete) --> [they].
+pronoun(thing, hypo) --> [something].
+pronoun(thing, concrete) --> [it].
 
 determiner(s,X=>B,X=>H,[(H:-B)]) --> [every].
 determiner(p,X=>B,X=>H,[(H:-B)]) --> [all].
@@ -98,6 +109,8 @@ proper_noun(s,arthur) --> [arthur].
 proper_noun(s,bill) --> [bill].
 proper_noun(s,colin) --> [colin].
 proper_noun(s,dave) --> [dave].
+
+proper_noun(s,gary) --> [gary].
 
 proper_noun(s,jack) --> [jack].
 
