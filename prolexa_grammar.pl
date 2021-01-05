@@ -20,9 +20,15 @@ pred(human,   1,[a/human,n/human]).
 pred(mortal,  1,[a/mortal,n/mortal]).
 pred(wounded, 1,[a/wounded]).
 pred(abnormal, 1,[a/abnormal]).
+pred(blue, 1,[a/blue]).
+pred(round, 1,[a/round]).
+pred(quiet, 1,[a/quiet]).
+pred(cold, 1,[a/cold]).
+
 pred(bird,    1,[n/bird]).
 pred(ostrich, 1,[n/ostrich]).
 pred(dove, 1,[n/dove]).
+
 pred(fly,     1,[v/fly]).
 
 pred2gr(P,1,C/W,X=>Lit):-
@@ -97,6 +103,8 @@ proper_noun(s,arthur) --> [arthur].
 proper_noun(s,bill) --> [bill].
 proper_noun(s,colin) --> [colin].
 proper_noun(s,dave) --> [dave].
+
+proper_noun(s,gary) --> [gary].
 
 proper_noun(s,jack) --> [jack].
 
