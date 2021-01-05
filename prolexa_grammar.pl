@@ -59,6 +59,7 @@ sword --> [that].
 % most of this follows Simply Logical, Chapter 7
 sentence1(C) --> determiner(N,M1,M2,C),noun(N,M1),verb_phrase(N,M2).
 sentence1([(L:-true)]) --> proper_noun(N,X),verb_phrase(N,X=>L).
+sentence1([(M1:-M2)]) --> adjective(p,M=>M2),[things],verb_phrase(p,M=>M1).
 
 sentence1([(M1:-M2)]) --> [if],pronoun(P,hypo),verb_phrase(s,M=>M2),[then],pronoun(P,concrete),verb_phrase(s,M=>M1).
 sentence1([(M1:-not(M2))]) --> [if],pronoun(P,hypo),n_verb_phrase(s,M=>M2),[then],pronoun(P,concrete),verb_phrase(s,M=>M1).
