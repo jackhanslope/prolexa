@@ -14,6 +14,9 @@ noun(s,M)			--> [Noun],   {pred2gr(_P,1,n/Noun,M)}.
 noun(p,M)			--> [Noun_p], {pred2gr(_P,1,n/Noun,M),noun_s2p(Noun,Noun_p)}.
 iverb(s,M)			--> [Verb_s], {pred2gr(_P,1,v/Verb,M),verb_p2s(Verb,Verb_s)}.
 iverb(p,M)			--> [Verb],   {pred2gr(_P,1,v/Verb,M)}.
+tverb(s,Y=>X)                   --> [Verb_s], {pred2gr(_P,2,v/Verb,Y=>X),verb_p2s(Verb,Verb_s)}.
+tverb(p,Y=>X)                   --> [Verb],   {pred2gr(_P,2,v/Verb,Y=>X)}.
+
 
 % unary predicates for adjectives, nouns and verbs
 pred(human,   1,[a/human,n/human]).
@@ -33,10 +36,17 @@ pred(cat, 1,[n/cat]).
 
 pred(fly,     1,[v/fly]).
 
+pred(like, 2,[v/like]).
+
 pred2gr(P,1,C/W,X=>Lit):-
 	pred(P,1,L),
 	member(C/W,L),
 	Lit=..[P,X].
+
+pred2gr(P,2,C/W,Y=>X=>Lit):-
+        pred(P,2,L),
+        member(C/W,L),
+        Lit=..[P,X,Y].
 
 noun_s2p(Noun_s,Noun_p):-
 	( Noun_s=woman -> Noun_p=women
@@ -79,6 +89,9 @@ verb_phrase(p,M) --> [are],property(p,M).
 verb_phrase(s,M) --> [are],property(s,M).
 verb_phrase(N,M) --> iverb(N,M).
 verb_phrase(_,M) --> [can],iverb(p,M).
+
+verb_phrase(p,X) --> tverb(p,Y=>X),noun(p,Y).
+verb_phrase(s,X) --> tverb(s,Y=>X),noun(p,Y).
 
 n_verb_phrase(s,M) --> [is,not],property(s,M).
 n_verb_phrase(_,M) --> [cannot],iverb(p,M).
