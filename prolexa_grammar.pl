@@ -28,6 +28,8 @@ pred(cold, 1,[a/cold]).
 pred(bird,    1,[n/bird]).
 pred(ostrich, 1,[n/ostrich]).
 pred(dove, 1,[n/dove]).
+pred(owl, 1,[n/owl]).
+pred(cat, 1,[n/cat]).
 
 pred(fly,     1,[v/fly]).
 
