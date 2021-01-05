@@ -94,6 +94,7 @@ sentence1([(M1:-M3,not(M2))]) --> [if],pronoun(P,hypo),n_and_phrase(N,M=>M3,M=>M
 sentence1([(not(M1):-M3,not(M2))]) --> [if],pronoun(P,hypo),n_and_phrase(N,M=>M3,M=>M2),[then],pronoun(P,concrete),n_verb_phrase(N,M=>M1).
 
 sentence1([(not(L):-true)]) --> proper_noun(N,X),n_verb_phrase(N,X=>L).
+sentence1([(not(Y):-X)]) --> noun(p,M=>X),n_verb_phrase(p,M=>Y).
 
 verb_phrase(s,M) --> [is],property(s,M).
 verb_phrase(p,M) --> [are],property(p,M).
@@ -111,6 +112,7 @@ verb_phrase(s,X) --> [can],tverb(p,Y=>X),noun(m,Y).
 
 n_verb_phrase(s,M) --> [is,not],property(s,M).
 n_verb_phrase(_,M) --> [cannot],iverb(p,M).
+n_verb_phrase(_,X) --> [cannot],tverb(p,Y=>X),noun(m,Y).
 
 and_phrase(s,X,Y) --> [is],property(s,X),[and],property(s,Y).
 
