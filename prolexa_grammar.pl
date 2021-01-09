@@ -22,6 +22,8 @@ tverb(p,Y=>X)                   --> [Verb],   {pred2gr(_P,2,v/Verb,Y=>X)}.
 % unary predicates for adjectives, nouns and verbs
 pred(human,   1,[a/human,n/human]).
 pred(mortal,  1,[a/mortal,n/mortal]).
+pred(metal,   1,[a/metal,n/metal]).
+
 pred(wounded, 1,[a/wounded]).
 pred(abnormal, 1,[a/abnormal]).
 pred(blue, 1,[a/blue]).
@@ -36,10 +38,15 @@ pred(duck, 1,[n/duck]).
 pred(owl, 1,[n/owl]).
 pred(cat, 1,[n/cat]).
 pred(muggle, 1,[n/muggle]).
+pred(insulator, 1,[n/insulator]).
+pred(iron, 1,[n/iron]).
+pred(nail, 1,[n/nail]).
 
 pred(sand, 1,[mn/sand]).
 pred(magic, 1,[mn/magic]).
 pred(football, 1,[mn/football]).
+pred(electricity, 1,[mn/electricity]).
+pred(iron, 1,[mn/iron]).
 
 pred(fly,     1,[v/fly]).
 pred(vanish,     1,[v/vanish]).
@@ -47,6 +54,7 @@ pred(vanish,     1,[v/vanish]).
 pred(like, 2,[v/like]).
 pred(do, 2, [v/do]).
 pred(play, 2, [v/play]).
+pred(conduct, 2, [v/conduct]).
 
 pred2gr(P,1,C/W,X=>Lit):-
 	pred(P,1,L),
@@ -97,6 +105,7 @@ sentence1([(not(M1):-M3,not(M2))]) --> [if],pronoun(P,hypo),n_and_phrase(N,M=>M3
 sentence1([(not(L):-true)]) --> proper_noun(N,X),n_verb_phrase(N,X=>L).
 sentence1([(not(Y):-X)]) --> noun(p,M=>X),n_verb_phrase(p,M=>Y).
 
+
 verb_phrase(s,M) --> [is],property(s,M).
 verb_phrase(p,M) --> [are],property(p,M).
 verb_phrase(s,M) --> [are],property(s,M).
@@ -114,6 +123,7 @@ verb_phrase(s,X) --> [can],tverb(p,Y=>X),noun(m,Y).
 n_verb_phrase(s,M) --> [is,not],property(s,M).
 n_verb_phrase(_,M) --> [cannot],iverb(p,M).
 n_verb_phrase(_,X) --> [cannot],tverb(p,Y=>X),noun(m,Y).
+n_verb_phrase(_,X) --> [do,not],tverb(p,Y=>X),noun(m,Y).
 
 and_phrase(s,X,Y) --> [is],property(s,X),[and],property(s,Y).
 
@@ -124,6 +134,7 @@ n_and_phrase(s,Y,X) --> [is,not],property(s,X),[and],property(s,Y).
 property(N,M) --> adjective(N,M).
 property(s,M) --> indef_article,noun(s,M).
 property(p,M) --> noun(p,M).
+property(_,M) --> [made,of],noun(m,M).
 
 pronoun(person, hypo) --> [someone].
 pronoun(person, hypo) --> [a,person].
