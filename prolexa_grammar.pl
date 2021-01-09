@@ -19,11 +19,12 @@ tverb(s,Y=>X)                   --> [Verb_s], {pred2gr(_P,2,v/Verb,Y=>X),verb_p2
 tverb(p,Y=>X)                   --> [Verb],   {pred2gr(_P,2,v/Verb,Y=>X)}.
 
 
-% unary predicates for adjectives, nouns and verbs
+% predicates for adjective/nouns
 pred(human,   1,[a/human,n/human]).
 pred(mortal,  1,[a/mortal,n/mortal]).
 pred(metal,   1,[a/metal,n/metal]).
 
+% predicates for adjectives
 pred(wounded, 1,[a/wounded]).
 pred(abnormal, 1,[a/abnormal]).
 pred(blue, 1,[a/blue]).
@@ -31,6 +32,7 @@ pred(round, 1,[a/round]).
 pred(quiet, 1,[a/quiet]).
 pred(cold, 1,[a/cold]).
 
+% predicates for singular nouns
 pred(bird,    1,[n/bird]).
 pred(ostrich, 1,[n/ostrich]).
 pred(dove, 1,[n/dove]).
@@ -42,15 +44,18 @@ pred(insulator, 1,[n/insulator]).
 pred(iron, 1,[n/iron]).
 pred(nail, 1,[n/nail]).
 
+% predicates for mass nouns
 pred(sand, 1,[mn/sand]).
 pred(magic, 1,[mn/magic]).
 pred(football, 1,[mn/football]).
 pred(electricity, 1,[mn/electricity]).
 pred(iron, 1,[mn/iron]).
 
+% predicates for intransitive verbs
 pred(fly,     1,[v/fly]).
 pred(vanish,     1,[v/vanish]).
 
+% predicates for transitive verbs
 pred(like, 2,[v/like]).
 pred(do, 2, [v/do]).
 pred(play, 2, [v/play]).
@@ -88,67 +93,82 @@ sentence(C) --> sword,sentence1(C).
 sword --> [].
 sword --> [that].
 
-% most of this follows Simply Logical, Chapter 7
 sentence1(C) --> determiner(N,M1,M2,C),noun(N,M1),verb_phrase(N,M2).
 sentence1([(L:-true)]) --> proper_noun(N,X),verb_phrase(N,X=>L).
+sentence1([(not(L):-true)]) --> proper_noun(N,X),negated_verb_phrase(N,X=>L).
+
+% example: "cold things are round"
 sentence1([(M1:-M2)]) --> adjective(p,M=>M2),[things],verb_phrase(p,M=>M1).
 
+% material conditional
+%       A => B
+%       ¬A => B
+%       A => ¬B
+%       A => ¬B
 sentence1([(M1:-M2)]) --> [if],pronoun(P,hypo),verb_phrase(s,M=>M2),[then],pronoun(P,concrete),verb_phrase(s,M=>M1).
-sentence1([(M1:-not(M2))]) --> [if],pronoun(P,hypo),n_verb_phrase(s,M=>M2),[then],pronoun(P,concrete),verb_phrase(s,M=>M1).
-sentence1([(not(M1):-M2)]) --> [if],pronoun(P,hypo),verb_phrase(s,M=>M2),[then],pronoun(P,concrete),n_verb_phrase(s,M=>M1).
+sentence1([(M1:-not(M2))]) --> [if],pronoun(P,hypo),negated_verb_phrase(s,M=>M2),[then],pronoun(P,concrete),verb_phrase(s,M=>M1).
+sentence1([(not(M1):-M2)]) --> [if],pronoun(P,hypo),verb_phrase(s,M=>M2),[then],pronoun(P,concrete),negated_verb_phrase(s,M=>M1).
+sentence1([(not(Y):-X)]) --> noun(p,M=>X),negated_verb_phrase(p,M=>Y).
 
-sentence1([(M1:-X,Y)]) --> [if],pronoun(P,hypo),and_phrase(s, M=>X, M=>Y), [then],pronoun(P,concrete), verb_phrase(s,M=>M1). 
+% material conditional with conjunction
+%       (A & B) => C
+%       (A & ¬B) => C, (¬A & B) => C
+%       (A & ¬B) => ¬C, (¬A & B) => ¬C
+sentence1([(M1:-X,Y)]) --> [if],pronoun(P,hypo),conjunctive_phrase(s, M=>X, M=>Y),[then],pronoun(P,concrete),verb_phrase(s,M=>M1). 
+sentence1([(M1:-M3,not(M2))]) --> [if],pronoun(P,hypo),negated_conjunctive_phrase(N,M=>M3,M=>M2),[then],pronoun(P,concrete),verb_phrase(N,M=>M1).
+sentence1([(not(M1):-M3,not(M2))]) --> [if],pronoun(P,hypo),negated_conjunctive_phrase(N,M=>M3,M=>M2),[then],pronoun(P,concrete),negated_verb_phrase(N,M=>M1).
 
-sentence1([(M1:-M3,not(M2))]) --> [if],pronoun(P,hypo),n_and_phrase(N,M=>M3,M=>M2),[then],pronoun(P,concrete),verb_phrase(N,M=>M1).
-sentence1([(not(M1):-M3,not(M2))]) --> [if],pronoun(P,hypo),n_and_phrase(N,M=>M3,M=>M2),[then],pronoun(P,concrete),n_verb_phrase(N,M=>M1).
-
-sentence1([(not(L):-true)]) --> proper_noun(N,X),n_verb_phrase(N,X=>L).
-sentence1([(not(Y):-X)]) --> noun(p,M=>X),n_verb_phrase(p,M=>Y).
-
-
+% verb phrases - properties
 verb_phrase(s,M) --> [is],property(s,M).
 verb_phrase(p,M) --> [are],property(p,M).
 verb_phrase(s,M) --> [are],property(s,M).
+
+% verb phrases - intransitive verbs
 verb_phrase(N,M) --> iverb(N,M).
 verb_phrase(_,M) --> [can],iverb(p,M).
 
+% verb phrases - transitive verbs
 verb_phrase(p,X) --> tverb(p,Y=>X),noun(p,Y).
 verb_phrase(p,X) --> tverb(p,Y=>X),noun(m,Y).
 verb_phrase(s,X) --> tverb(s,Y=>X),noun(p,Y).
 verb_phrase(s,X) --> tverb(s,Y=>X),noun(m,Y).
-
 verb_phrase(s,X) --> [can],tverb(p,Y=>X),noun(p,Y).
 verb_phrase(s,X) --> [can],tverb(p,Y=>X),noun(m,Y).
 
-n_verb_phrase(s,M) --> [is,not],property(s,M).
-n_verb_phrase(_,M) --> [cannot],iverb(p,M).
-n_verb_phrase(_,X) --> [cannot],tverb(p,Y=>X),noun(m,Y).
-n_verb_phrase(_,X) --> [do,not],tverb(p,Y=>X),noun(m,Y).
+% negated verb phrases
+negated_verb_phrase(s,M) --> [is,not],property(s,M).
+negated_verb_phrase(_,M) --> [cannot],iverb(p,M).
+negated_verb_phrase(_,X) --> [cannot],tverb(p,Y=>X),noun(m,Y).
+negated_verb_phrase(_,X) --> [do,not],tverb(p,Y=>X),noun(m,Y).
 
-and_phrase(s,X,Y) --> [is],property(s,X),[and],property(s,Y).
+% conjunctive phrases
+conjunctive_phrase(s,X,Y) --> [is],property(s,X),[and],property(s,Y).
 
-% third term is the negated one
-n_and_phrase(s,X,Y) --> [is],property(s,X),[and,not],property(s,Y).
-n_and_phrase(s,Y,X) --> [is,not],property(s,X),[and],property(s,Y).
+% negated conjunctive phrases
+negated_conjunctive_phrase(s,X,Y) --> [is],property(s,X),[and,not],property(s,Y).
+negated_conjunctive_phrase(s,Y,X) --> [is,not],property(s,X),[and],property(s,Y).
 
+% properties
 property(N,M) --> adjective(N,M).
-property(s,M) --> indef_article,noun(s,M).
+property(s,M) --> indefinite_article,noun(s,M).
 property(p,M) --> noun(p,M).
 property(_,M) --> [made,of],noun(m,M).
 
+% pronouns
 pronoun(person, hypo) --> [someone].
 pronoun(person, hypo) --> [a,person].
 pronoun(person, concrete) --> [they].
 pronoun(thing, hypo) --> [something].
 pronoun(thing, concrete) --> [it].
 
+% determiners
 determiner(s,X=>B,X=>H,[(H:-B)]) --> [every].
 determiner(p,X=>B,X=>H,[(H:-B)]) --> [all].
 determiner(p,X=>B,X=>H,[(H:-B)]) --> [].
-%determiner(p, sk=>H1, sk=>H2, [(H1:-true),(H2 :- true)]) -->[some].
 
-indef_article --> [a].
-indef_article --> [an].
+% indefinite articles
+indefinite_article --> [a].
+indefinite_article --> [an].
 
 % proper nouns
 proper_noun(s,arthur) --> [arthur].
@@ -174,6 +194,7 @@ question1(Q) --> [is], proper_noun(N,X),property(N,X=>Q).
 question1(Q) --> [does],proper_noun(_,X),verb_phrase(_,X=>Q).
 question1(Q) --> [can],proper_noun(_,X),verb_phrase(_,X=>Q).
 question1([(Y:-X)]) --> [do], noun(p,M=>X) ,verb_phrase(_,M=>Y).
+question1([(Y:-X)]) --> [can], noun(p,M=>X) ,verb_phrase(_,M=>Y).
 question1(Q) --> [is],determiner(N,M1,M2,Q),noun(N,M1),property(N,M2).
 
 
