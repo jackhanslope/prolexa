@@ -78,6 +78,14 @@ add_body_to_rulebase(A,Rs0,[[(A:-true)]|Rs0]).
 %%% meta-interpreter that constructs proofs %%%
 
 % 3d argument is accumulator for proofs
+% meta-interpreter
+prove_rb(Q,RB,RP):-
+        prove_rb(Q,RB,[],P),
+        reverse(P,RP).
+prove_rb([(H:-B)],Rulebase,P0,P):-!,
+        numbervars((H:-B),0,_),
+        add_body_to_rulebase(B,Rulebase,RB2),
+        prove_rb(H,RB2,P0,P).
 prove_rb(true,_Rulebase,P,P):-!.
 prove_rb((A,B),Rulebase,P0,P):-!,
 	find_clause((A:-C),Rule,Rulebase),
@@ -100,7 +108,6 @@ prove_rb(A,Rulebase,P0,[p(A,Rule)|P]):-
 % top-level version that ignores proof
 prove_rb(Q,RB):-
 	prove_rb(Q,RB,[],_P).
-
 
 %%% Utilities from nl_shell.pl %%%
 
