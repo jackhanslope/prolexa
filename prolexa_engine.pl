@@ -79,9 +79,6 @@ add_body_to_rulebase(A,Rs0,[[(A:-true)]|Rs0]).
 
 % 3d argument is accumulator for proofs
 % meta-interpreter
-prove_rb(Q,RB,RP):-
-        prove_rb(Q,RB,[],P),
-        reverse(P,RP).
 prove_rb([(H:-B)],Rulebase,P0,P):-!,
         numbervars((H:-B),0,_),
         add_body_to_rulebase(B,Rulebase,RB2),
@@ -119,7 +116,9 @@ find_clause(Clause,Rule,[_Rule|Rules]):-
 % transform instantiated, possibly conjunctive, query to list of clauses
 transform((A,B),[(A:-true)|Rest]):-!,
     transform(B,Rest).
+transform([(A:-B)], [(A:-B)]).
 transform(A,[(A:-true)]).
+
 
 %%% Two more commands: all_rules/1 and all_answers/2
 
